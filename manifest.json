@@ -3,7 +3,7 @@
   "name": "Yori Task",
   "version": "1.0.2",
   "minAppVersion": "0.15.0",
-  "description": "task manager, week planner, year planner",
+  "description": "Task manager, week planner, year planner.",
   "author": "YoriGo",
   "authorUrl": "",
   "isDesktopOnly": true
