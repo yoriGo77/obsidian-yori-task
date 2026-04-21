@@ -1,0 +1,615 @@
+/* Ribbon：直接挂载的 Yori.svg */
+.yori-task-ribbon .yori-task-ribbon-svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.lp-root {
+  --lp-accent: #998052;
+  --lp-card-bg: #f6f1eb;
+  --lp-add-hint: #cbc0af;
+  --lp-panel-bg: #f8f7f6;
+  --lp-task-text: #806531;
+  /* 添加框最大高度：限制在列内标题下方区域，超出在框内滚动 */
+  --lp-add-input-max-h: min(220px, 32vh);
+  background-color: var(--lp-panel-bg);
+  color: var(--lp-accent);
+  padding: 18px;
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  max-height: 100%;
+}
+
+.lp-tabs {
+  display: flex;
+  gap: 26px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  min-height: 50px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.lp-view-topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  min-height: 34px;
+}
+
+.lp-view-range {
+  color: var(--lp-accent);
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.lp-week-controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lp-week-chip {
+  padding: 2px 8px;
+  border: 1px solid #ddd4c8;
+  border-radius: 14px;
+  color: #a49478;
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+  background: #fff;
+}
+
+.lp-week-chip.is-active {
+  border-color: #998052;
+  color: #806531;
+  background: #f7f3ec;
+}
+
+.lp-archive-btn {
+  margin-left: auto;
+  padding: 4px 10px;
+  border: 1px solid #d8cebe;
+  border-radius: 4px;
+  color: #8f7a52;
+  font-size: 12px;
+  cursor: pointer;
+  background: #fff;
+  user-select: none;
+}
+
+.lp-tab {
+  position: relative;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: #b6a98f;
+  cursor: pointer;
+  user-select: none;
+  padding: 0 6px 12px;
+}
+
+.lp-tab.is-active {
+  color: var(--lp-accent);
+  font-weight: 600;
+  background: transparent;
+  border-radius: 0;
+}
+
+.lp-tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5px;
+  background: #998052;
+}
+
+.lp-placeholder {
+  margin-top: 24px;
+  color: #b6a98f;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.lp-board-grid {
+  flex: 1 1 0%;
+  min-height: 0;
+  height: 100%;
+  max-height: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 18px;
+  align-content: stretch;
+  align-items: stretch;
+}
+
+/* 周视图：固定 2 行 × 4 列（8 个区块） */
+.lp-board-grid--week {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: unset;
+  align-content: stretch;
+}
+
+/* 年视图：固定 3 行 × 4 列（12 个区块） */
+.lp-board-grid--year {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: unset;
+  align-content: stretch;
+}
+
+/* YEAR 视图：事件与 +Add 按钮高度统一为 36 */
+.lp-board-grid--year .lp-event-display,
+.lp-board-grid--year .lp-event-text {
+  min-height: 32px;
+}
+
+.lp-board-grid--year .lp-event-display {
+  padding: 4px 0;
+}
+
+.lp-board-grid--year .lp-add-trigger {
+  height: 34px;
+  line-height: 32px;
+  font-size: 16px;
+  border-color: #d4cbbf;
+}
+
+.lp-board-grid--year .lp-add-input.lp-add-input--expand {
+  border-color: #d4cbbf;
+}
+
+/* TASK 视图事件文字颜色 */
+.lp-board-grid--task .lp-event-display,
+.lp-board-grid--task .lp-event-text {
+  color: var(--lp-task-text);
+}
+
+/* TASK 视图：勾选框与任务文字更紧凑 */
+.lp-board-grid--task .lp-card-row {
+  gap: 0;
+}
+
+.lp-board-grid--task .lp-check {
+  margin-left: 2px;
+}
+
+.lp-board-grid--task .lp-event-display,
+.lp-board-grid--task .lp-event-text {
+  padding-left: 2px;
+}
+
+.lp-column {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e4dbce;
+  border-radius: 4px;
+  background: #ffffff;
+  padding: 12px;
+  min-height: 0;
+  max-height: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.lp-add-area {
+  flex-shrink: 0;
+  margin-top: 12px;
+}
+
+/* Add 在列底部时：与上方列表留出间距，不参与压缩 */
+.lp-add-area--bottom {
+  margin-top: 12px;
+}
+
+.lp-column-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--lp-accent);
+  margin-bottom: 0;
+  user-select: none;
+}
+
+.lp-column-title--done {
+  color: #b2a899;
+}
+
+.lp-column-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.lp-clear-column-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
+  line-height: 1;
+  color: #d4cbbf;
+  border: none !important;
+  border-radius: 3px;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  background: transparent !important;
+  appearance: none;
+  -webkit-appearance: none;
+  box-shadow: none !important;
+  outline: none !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.lp-clear-column-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: #d4cbbf;
+}
+
+.lp-column:hover .lp-clear-column-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lp-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 2px;
+  margin-top: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.lp-list.drag-over {
+  background: #faf6f0;
+}
+
+.lp-list > .lp-card {
+  flex-shrink: 0;
+}
+
+.lp-card {
+  border-radius: 4px;
+  background: var(--lp-card-bg);
+  padding: 0 10px;
+  border: none;
+  min-height: auto;
+}
+
+.lp-card-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 0;
+}
+
+.lp-card-row--done {
+  min-height: 42px;
+}
+
+.lp-check {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  flex-shrink: 0;
+  background: #fff;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  accent-color: transparent;
+  align-self: center;
+}
+
+.lp-check:checked {
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23998052' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' d='M2.5 6l2.5 3 5-6.5'/%3E%3C/svg%3E");
+  background-size: 11px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.lp-event-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.lp-event-display {
+  width: 100%;
+  min-height: 38px;
+  padding: 7px 8px;
+  box-sizing: border-box;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--lp-task-text);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  cursor: text;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.lp-event-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.lp-event-link:hover {
+  color: #b2a899;
+}
+
+/* 归档笔记：仅链接悬浮时变色，默认颜色保持主题原值 */
+.yori-archive-note li {
+  color: #998052;
+}
+
+.yori-archive-note {
+  --link-color: #998052;
+  --link-color-hover: #b2a899;
+  --link-unresolved-color: #998052;
+  --link-unresolved-opacity: 1;
+}
+
+.theme-light .yori-archive-note,
+.theme-dark .yori-archive-note,
+.markdown-reading-view.yori-archive-note,
+.markdown-preview-view.yori-archive-note,
+.markdown-source-view.yori-archive-note {
+  --link-color: #998052 !important;
+  --link-color-hover: #b2a899 !important;
+  --link-unresolved-color: #998052 !important;
+  --link-unresolved-opacity: 1 !important;
+}
+
+.yori-archive-note a.internal-link,
+.yori-archive-note a.internal-link.is-unresolved,
+.markdown-preview-view.yori-archive-note a.internal-link,
+.markdown-preview-view.yori-archive-note a.internal-link.is-unresolved,
+.markdown-source-view.yori-archive-note .cm-hmd-internal-link,
+.markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link {
+  color: #998052 !important;
+  opacity: 1 !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.yori-archive-note a.internal-link:hover,
+.yori-archive-note a.internal-link.is-unresolved:hover,
+.markdown-preview-view.yori-archive-note a.internal-link:hover,
+.markdown-preview-view.yori-archive-note a.internal-link.is-unresolved:hover,
+.markdown-source-view.yori-archive-note .cm-hmd-internal-link:hover,
+.markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link:hover {
+  color: #b2a899 !important;
+}
+
+.lp-event-edit-wrap {
+  width: 100%;
+  min-width: 0;
+}
+
+.lp-event-text {
+  width: 100%;
+  min-height: 38px;
+  resize: none;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--lp-task-text);
+  font-size: 15px;
+  line-height: 1.4;
+  padding: 7px 8px;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.lp-event-text:focus {
+  outline: none;
+  border-color: #cbc0af;
+}
+
+.lp-add-area .lp-add-trigger,
+.lp-add-area .lp-add-input {
+  margin-top: 0;
+}
+
+.lp-add-trigger {
+  margin-top: 10px;
+  width: 100%;
+  height: 38px;
+  box-sizing: border-box;
+  border: 1px dashed #cbc0af;
+  border-radius: 4px;
+  background: #fff;
+  color: var(--lp-add-hint);
+  text-align: center;
+  padding: 0 12px;
+  font-size: 16px;
+  line-height: 36px;
+  cursor: text;
+  user-select: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.lp-column:hover .lp-add-trigger {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 手机/触屏设备：没有 hover，按钮需常显，否则无法添加或清空 */
+@media (hover: none), (pointer: coarse) {
+  .lp-add-trigger,
+  .lp-clear-column-btn {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* 点击 + Add 后展开的输入框（占位符为提示语） */
+.lp-add-input.lp-add-input--expand {
+  display: block;
+  margin-top: 10px;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  max-height: var(--lp-add-input-max-h);
+  padding: 10px 12px;
+  border: 1px dashed var(--lp-add-hint);
+  border-radius: 4px;
+  background: #fff;
+  color: #998052;
+  resize: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.45;
+  text-align: left;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  cursor: text;
+  caret-color: var(--lp-accent, #998052);
+}
+
+.lp-add-input.lp-add-input--expand:focus {
+  outline: none;
+  border-color: #cbc0af;
+  border-style: solid;
+}
+
+.yori-delete-confirm-msg {
+  margin: 0 0 14px;
+  line-height: 1.45;
+  color: var(--text-normal);
+}
+
+.yori-text-input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d7cdbd;
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #5d4f35;
+  background: #fff;
+}
+
+.yori-text-input:focus {
+  outline: none;
+  border-color: #bfae93;
+}
+
+.yori-reset-btn {
+  font-size: 11px;
+  padding: 2px 8px;
+}
+
+/* 设置页：底部操作提示 */
+.yori-settings-tips {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--background-modifier-border);
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.65;
+  max-width: 36rem;
+}
+
+.yori-settings-tips-title {
+  font-weight: 600;
+  margin-bottom: 0.5em;
+  color: var(--text-normal);
+}
+
+.yori-settings-tips p {
+  margin: 0.35em 0;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.lp-context-menu {
+  position: fixed;
+  z-index: 10000;
+  min-width: 140px;
+  background: #f4f2ee;
+  border-radius: 8px;
+  border: 1px solid #d5cdc2;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lp-context-action {
+  border: none;
+  text-align: left;
+  background: transparent;
+  color: #3f3a33;
+  padding: 6px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.lp-context-action:hover {
+  background: #e8e0d5;
+}
+
+.lp-context-swatches {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px 6px;
+}
+
+.lp-swatch {
+  border: none;
+  border-radius: 3px;
+  height: 22px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.lp-swatch.is-selected {
+  box-shadow: 0 0 0 2px #998052;
+}
