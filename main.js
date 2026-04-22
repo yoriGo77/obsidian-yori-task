@@ -116,6 +116,10 @@ const I18N = {
     "settings.linkSmart": "智能复用（已打开则跳转，否则新开）",
     "settings.linkNew": "总是新开标签页",
     "settings.linkReplace": "在当前标签页打开",
+    "settings.donate": "打赏支持",
+    "settings.donateDesc": "如果这个插件对你有帮助，欢迎请作者喝杯咖啡。",
+    "settings.donateBtn": "微信/支付宝打赏",
+    "settings.donateFloatLabel": "打赏",
     "tips.title": "提示：",
     "tips.shiftEnter": "在输入任务时，Shift+回车可换行",
     "tips.dragNote": "支持将笔记直接拖入任务区块中",
@@ -190,6 +194,10 @@ const I18N = {
     "settings.linkSmart": "Reuse open tab, otherwise new tab",
     "settings.linkNew": "Always open in a new tab",
     "settings.linkReplace": "Open in the current tab",
+    "settings.donate": "Support the plugin",
+    "settings.donateDesc": "If this plugin helps you, consider buying the author a coffee.",
+    "settings.donateBtn": "Donate via WeChat / Alipay",
+    "settings.donateFloatLabel": "Donate",
     "tips.title": "Tips",
     "tips.shiftEnter": "When adding a task, Shift+Enter inserts a new line.",
     "tips.dragNote": "Drag a note into a task column to create a linked task.",
@@ -1723,6 +1731,7 @@ class YoriTaskSettingsTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
     containerEl.createEl("h2", { text: t("settings.heading") });
+    const donateUrl = "https://yorigo77.github.io/";
 
     const addColorSetting = (name, desc, key, fallback) => {
       new Setting(containerEl)
@@ -1774,11 +1783,22 @@ class YoriTaskSettingsTab extends PluginSettingTab {
           })
       );
 
-    const tips = containerEl.createDiv({ cls: "yori-settings-tips" });
+    const tipsRow = containerEl.createDiv({ cls: "yori-settings-tips-row" });
+    const tips = tipsRow.createDiv({ cls: "yori-settings-tips" });
     tips.createEl("div", { text: t("tips.title"), cls: "yori-settings-tips-title" });
     tips.createEl("p", { text: t("tips.shiftEnter") });
     tips.createEl("p", { text: t("tips.dragNote") });
     tips.createEl("p", { text: t("tips.desktopOnly") });
+
+    const donateFloat = tipsRow.createEl("button", {
+      cls: "yori-donate-float",
+      attr: { type: "button", "aria-label": t("settings.donateBtn") }
+    });
+    donateFloat.createEl("span", { cls: "yori-donate-float-heart", text: "❤" });
+    donateFloat.createEl("span", { cls: "yori-donate-float-label", text: t("settings.donateFloatLabel") });
+    donateFloat.addEventListener("click", () => {
+      window.open(donateUrl, "_blank", "noopener,noreferrer");
+    });
   }
 }
 
