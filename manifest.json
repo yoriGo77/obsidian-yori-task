@@ -1,7 +1,7 @@
 {
   "id": "yori-task",
   "name": "Yori Task",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "minAppVersion": "0.15.0",
   "description": "Task manager, week planner, year planner.",
   "author": "YoriGo",

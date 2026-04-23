@@ -8,7 +8,7 @@
 
 .lp-root {
   --lp-accent: #998052;
-  --lp-card-bg: #f6f1eb;
+  --lp-card-bg: #f8f5f1;
   --lp-add-hint: #cbc0af;
   --lp-panel-bg: #f8f7f6;
   --lp-task-text: #806531;
@@ -143,7 +143,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 5px;
+  height: 4px;
   background: #998052;
 }
 
@@ -272,7 +272,7 @@
 .lp-column-title {
   font-size: 15px;
   font-weight: 600;
-  color: var(--lp-accent);
+  color: #806531;
   margin-bottom: 0;
   padding-left: 2px;
   user-select: none;
@@ -550,10 +550,10 @@
 
 .lp-event-display {
   width: 100%;
-  min-height: 28px;
+  min-height: 22px;
   padding: 7px 8px;
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.4;
   color: var(--lp-task-text);
   white-space: pre-wrap;
@@ -629,7 +629,7 @@
 .lp-event-text {
   display: block;
   width: 100%;
-  min-height: 28px;
+  min-height: 22px;
   margin: 1px 0 0;
   resize: none;
   overflow: hidden;
@@ -637,7 +637,7 @@
   border-radius: 4px;
   background: inherit;
   color: var(--lp-task-text);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.4;
   padding: 7px 8px;
   box-sizing: border-box;
