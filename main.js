@@ -65,7 +65,7 @@ const constantsModule =
       DEFAULT_SETTINGS: {
         accentColor: "#998052",
         addHintColor: "#cbc0af",
-        cardBgColor: "#f8f5f1",
+        cardBgColor: "#f6f1eb",
         panelBgColor: "#f8f7f6",
         noteOpenMode: "smart",
         uiLanguage: "en",

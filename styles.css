@@ -8,7 +8,7 @@
 
 .lp-root {
   --lp-accent: #998052;
-  --lp-card-bg: #f8f5f1;
+  --lp-card-bg: #f6f1eb;
   --lp-add-hint: #cbc0af;
   --lp-panel-bg: #f8f7f6;
   --lp-task-text: #806531;
@@ -272,7 +272,7 @@
 .lp-column-title {
   font-size: 15px;
   font-weight: 600;
-  color: #806531;
+  color: var(--lp-accent);
   margin-bottom: 0;
   padding-left: 2px;
   user-select: none;
