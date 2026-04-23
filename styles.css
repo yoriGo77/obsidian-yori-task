@@ -30,7 +30,7 @@
 .lp-tabs {
   display: flex;
   gap: 26px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   padding-bottom: 8px;
   min-height: 50px;
   align-items: flex-end;
@@ -41,7 +41,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   min-height: 34px;
 }
 
@@ -50,6 +50,39 @@
   font-size: 13px;
   letter-spacing: 0.3px;
   white-space: nowrap;
+}
+
+.lp-week-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lp-week-arrow {
+  width: 24px;
+  height: 24px;
+  border: none !important;
+  border-radius: 4px;
+  color: #8f7a52;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  line-height: 1;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.lp-week-arrow:hover,
+.lp-week-arrow:focus,
+.lp-week-arrow:focus-visible,
+.lp-week-arrow:active {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .lp-week-controls {
@@ -94,7 +127,7 @@
   color: #b6a98f;
   cursor: pointer;
   user-select: none;
-  padding: 0 6px 12px;
+  padding: 0 6px 10px;
 }
 
 .lp-tab.is-active {
@@ -130,7 +163,7 @@
   overflow-x: auto;
   overflow-y: auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   grid-template-rows: minmax(0, 1fr);
   grid-auto-rows: minmax(0, 1fr);
   gap: 18px;
@@ -138,41 +171,67 @@
   align-items: stretch;
 }
 
-/* 周视图：固定 2 行 × 4 列（8 个区块） */
-.lp-board-grid--week {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: unset;
-  align-content: stretch;
-}
-
-/* 年视图：固定 3 行 × 4 列（12 个区块） */
+/* WEEK / YEAR：取消固定行高，超出页面时交给面板滚动。 */
+.lp-board-grid--week,
 .lp-board-grid--year {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  grid-auto-rows: unset;
-  align-content: stretch;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-rows: none;
+  grid-auto-rows: minmax(320px, 1fr);
+  align-content: start;
+  align-items: stretch;
+  padding-bottom: 8px;
 }
 
-/* YEAR 视图：事件与 +Add 按钮高度统一为 36 */
-.lp-board-grid--year .lp-event-display,
-.lp-board-grid--year .lp-event-text {
-  min-height: 32px;
+/* WEEK / YEAR：列结构固定为 头部 / 列表 / Add，确保 Add 区始终有位置。 */
+.lp-board-grid--week .lp-column,
+.lp-board-grid--year .lp-column {
+  height: 100%;
+  max-height: 100%;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
 }
 
-.lp-board-grid--year .lp-event-display {
-  padding: 4px 0;
+/* WEEK / YEAR：列表区占据剩余高度，任务过多时在区块内部滚动。 */
+.lp-board-grid--week .lp-list,
+.lp-board-grid--year .lp-list {
+  min-height: 0;
+  max-height: none;
+  flex: 1 1 auto;
 }
 
+/* WEEK / YEAR 视图默认显示 Add，避免必须 hover 才可见。 */
+.lp-board-grid--week .lp-add-trigger,
 .lp-board-grid--year .lp-add-trigger {
-  height: 34px;
-  line-height: 32px;
-  font-size: 16px;
-  border-color: #d4cbbf;
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.lp-board-grid--year .lp-add-input.lp-add-input--expand {
-  border-color: #d4cbbf;
+/* TASK 视图：Add 按钮常驻显示。 */
+.lp-board-grid--task .lp-add-trigger {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* TASK 视图网格规则与 WEEK 一致：列宽、列高、分布方式完全对齐。 */
+.lp-board-grid--task {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-rows: none;
+  grid-auto-rows: minmax(400px, 1fr);
+  align-content: start;
+  align-items: stretch;
+  padding-bottom: 8px;
+}
+
+.lp-board-grid--task .lp-column {
+  height: 100%;
+  max-height: 100%;
+  min-height: 400px;
+}
+
+.lp-board-grid--week .lp-add-area--bottom,
+.lp-board-grid--year .lp-add-area--bottom {
+  margin-top: 10px;
 }
 
 /* TASK 视图事件文字颜色 */
@@ -196,6 +255,7 @@
 }
 
 .lp-column {
+  position: relative;
   display: flex;
   flex-direction: column;
   border: 1px solid #e4dbce;
@@ -209,21 +269,12 @@
   box-sizing: border-box;
 }
 
-.lp-add-area {
-  flex-shrink: 0;
-  margin-top: 12px;
-}
-
-/* Add 在列底部时：与上方列表留出间距，不参与压缩 */
-.lp-add-area--bottom {
-  margin-top: 12px;
-}
-
 .lp-column-title {
   font-size: 15px;
   font-weight: 600;
   color: var(--lp-accent);
   margin-bottom: 0;
+  padding-left: 2px;
   user-select: none;
 }
 
@@ -236,6 +287,132 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+}
+
+.lp-column-head.is-draggable {
+  cursor: default;
+}
+
+.lp-root.is-column-dragging .lp-column-head.is-draggable {
+  cursor: grabbing;
+}
+
+.lp-root.is-any-dragging,
+.lp-root.is-any-dragging * {
+  cursor: grabbing !important;
+}
+
+.lp-column.lp-column-drag-over {
+  border-color: #e4dbce;
+  box-shadow: none;
+}
+
+.lp-column.lp-column-drag-over-before,
+.lp-column.lp-column-drag-over-after {
+  overflow: visible;
+}
+
+.lp-column.lp-column-drag-over-before::after,
+.lp-column.lp-column-drag-over-after::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  width: 6px;
+  background: #cdbb98;
+  border-radius: 3px;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.lp-column.lp-column-drag-over-before::after {
+  left: -12px;
+}
+
+.lp-column.lp-column-drag-over-after::after {
+  right: -12px;
+}
+
+.lp-root.is-column-dragging .lp-column.lp-column-drag-over-before.lp-column-drag-over-edge-start {
+  transform: translateX(12px);
+}
+
+.lp-root.is-column-dragging .lp-column.lp-column-drag-over-after.lp-column-drag-over-edge-end {
+  transform: translateX(-12px);
+}
+
+.lp-root.is-column-dragging-stack .lp-column.lp-column-drag-over-before::after,
+.lp-root.is-column-dragging-stack .lp-column.lp-column-drag-over-after::after {
+  left: 12px;
+  right: 12px;
+  top: auto;
+  bottom: auto;
+  width: auto;
+  height: 6px;
+}
+
+.lp-root.is-column-dragging-stack .lp-column.lp-column-drag-over-before::after {
+  top: -12px;
+}
+
+.lp-root.is-column-dragging-stack .lp-column.lp-column-drag-over-after::after {
+  bottom: -12px;
+}
+
+.lp-root.is-column-dragging-stack .lp-column.lp-column-drag-over-before.lp-column-drag-over-edge-start {
+  transform: translateY(12px);
+}
+
+.lp-root.is-column-dragging-stack .lp-column.lp-column-drag-over-after.lp-column-drag-over-edge-end {
+  transform: translateY(-12px);
+}
+
+.lp-lock-column-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
+  line-height: 1;
+  color: #d4cbbf;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  box-shadow: none !important;
+  outline: none !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.lp-lock-column-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: #d4cbbf;
+}
+
+.lp-column:hover .lp-lock-column-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lp-lock-column-btn.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  color: #8f7a52;
+  border-color: #cbbda7;
+  background: #fcfaf6;
+}
+
+.lp-lock-column-btn.is-active svg {
+  stroke: #8f7a52;
 }
 
 .lp-clear-column-btn {
@@ -279,7 +456,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding-right: 2px;
+  padding: 0 2px;
   margin-top: 12px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -288,6 +465,15 @@
 
 .lp-list.drag-over {
   background: #faf6f0;
+}
+
+.lp-drag-insert-indicator {
+  height: 6px;
+  border-radius: 3px;
+  background: #cdbb98;
+  opacity: 0.8;
+  margin: 2px 0;
+  flex-shrink: 0;
 }
 
 .lp-list > .lp-card {
@@ -300,6 +486,27 @@
   padding: 0 10px;
   border: none;
   min-height: auto;
+}
+
+.lp-card.is-dragging {
+  opacity: 0.35;
+}
+
+.lp-drag-ghost {
+  position: fixed;
+  z-index: 11000;
+  max-width: 260px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid #d8cebe;
+  background: #f6f1eb;
+  color: #806531;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
 }
 
 .lp-card-row {
@@ -343,10 +550,10 @@
 
 .lp-event-display {
   width: 100%;
-  min-height: 38px;
+  min-height: 28px;
   padding: 7px 8px;
   box-sizing: border-box;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.4;
   color: var(--lp-task-text);
   white-space: pre-wrap;
@@ -415,18 +622,22 @@
 .lp-event-edit-wrap {
   width: 100%;
   min-width: 0;
+  background: inherit;
+  border-radius: 4px;
 }
 
 .lp-event-text {
+  display: block;
   width: 100%;
-  min-height: 38px;
+  min-height: 28px;
+  margin: 1px 0 0;
   resize: none;
   overflow: hidden;
   border: 1px solid transparent;
   border-radius: 4px;
-  background: transparent;
+  background: inherit;
   color: var(--lp-task-text);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.4;
   padding: 7px 8px;
   box-sizing: border-box;
@@ -438,6 +649,17 @@
 .lp-event-text:focus {
   outline: none;
   border-color: #cbc0af;
+  background: inherit;
+}
+
+.lp-add-area {
+  flex-shrink: 0;
+  margin-top: 12px;
+}
+
+/* Add 在列底部时：与上方列表留出间距，不参与压缩 */
+.lp-add-area--bottom {
+  margin-top: 12px;
 }
 
 .lp-add-area .lp-add-trigger,
@@ -473,6 +695,7 @@
 /* 手机/触屏设备：没有 hover，按钮需常显，否则无法添加或清空 */
 @media (hover: none), (pointer: coarse) {
   .lp-add-trigger,
+  .lp-lock-column-btn,
   .lp-clear-column-btn {
     opacity: 1;
     pointer-events: auto;

@@ -1,0 +1,9 @@
+{
+  "name": "obsidian-yori-task",
+  "version": "1.0.5-dev",
+  "private": true,
+  "description": "Development tooling for Yori Task plugin",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}
