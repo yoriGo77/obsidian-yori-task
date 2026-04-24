@@ -1198,8 +1198,7 @@ class YoriTaskView extends ItemView {
       const board = container.createDiv({ cls: "lp-board-grid lp-board-grid--task" });
       this.watchScopeResize(SCOPE_BOARD, board);
       this.plugin.listColumns().forEach((column) => {
-        const boardTitle = this.getBoardColumnTitle(column);
-        this.renderColumn(board, { ...column, title: boardTitle }, SCOPE_BOARD);
+        this.renderColumn(board, column, SCOPE_BOARD, this.getBoardColumnTitle(column));
       });
       if (!this._lockedColumnByScope[SCOPE_BOARD]) {
         this.restoreTabScroll(board, "task");
@@ -1969,7 +1968,7 @@ class YoriTaskView extends ItemView {
     modal.open();
   }
 
-  renderColumn(parent, column, scope) {
+  renderColumn(parent, column, scope, displayTitle) {
     const sc = scope || SCOPE_BOARD;
     const box = parent.createDiv({ cls: "lp-column" });
     box.dataset.columnId = column.id;
@@ -1983,7 +1982,7 @@ class YoriTaskView extends ItemView {
     }
     const titleCls =
       sc === SCOPE_BOARD && column.id === DONE_COLUMN_ID ? "lp-column-title lp-column-title--done" : "lp-column-title";
-    const title = head.createDiv({ cls: titleCls, text: column.title });
+    const title = head.createDiv({ cls: titleCls, text: displayTitle || column.title });
     const openColumnContextMenu = (evt) => {
       evt.preventDefault();
       if (sc === SCOPE_BOARD) {
