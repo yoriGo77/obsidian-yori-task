@@ -1685,14 +1685,24 @@ class YoriTaskView extends ItemView {
 
   getBoardColumnTitle(column) {
     if (!column || !column.id) return column?.title || "";
-    if (yoriLang() !== "zh") return column.title;
     const zhTitleById = {
       today: "待办",
       upcoming: "近期",
       later: "后期",
       [DONE_COLUMN_ID]: "最近30条完成"
     };
-    return zhTitleById[column.id] || column.title;
+    const enDefaultTitleById = {
+      today: "TODO",
+      upcoming: "UPCOMING",
+      later: "LATER",
+      [DONE_COLUMN_ID]: "RECENT 30 DONE"
+    };
+    const currentTitle = column.title || "";
+    const enDefault = enDefaultTitleById[column.id];
+    const zhDefault = zhTitleById[column.id];
+    const isSystemDefaultTitle = !!enDefault && (currentTitle === enDefault || currentTitle === zhDefault);
+    if (!isSystemDefaultTitle) return currentTitle;
+    return yoriLang() === "zh" ? zhDefault || currentTitle : enDefault || currentTitle;
   }
 
   getWeekColumnTitle(column) {
