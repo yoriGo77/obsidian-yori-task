@@ -63,22 +63,27 @@ test("migrateWeekKeysToLastWeek fills missing weekKey only for week scope", () =
   assert.equal("weekKey" in settings.data.events[2], false);
 });
 
-test("ensureDefaultColumns keeps custom columns and fixed default titles", () => {
+test("ensureDefaultColumns preserves renamed defaults and custom order", () => {
   const settings = createSettings({
     data: {
       boardColumns: [
-        { id: DONE_COLUMN_ID, title: "DONE CUSTOM", order: 0 },
-        { id: "today", title: "TODAY CUSTOM", order: 1 },
-        { id: "custom_col", title: "MY BLOCK", order: 2 }
+        { id: "upcoming", title: "My Upcoming", order: 0 },
+        { id: "custom_col", title: "MY BLOCK", order: 1 },
+        { id: "today", title: "My Todo", order: 2 },
+        { id: DONE_COLUMN_ID, title: "My Done", order: 3 }
       ],
       events: []
     }
   });
   ensureDefaultColumns(settings);
   const ids = settings.data.boardColumns.map((c) => c.id);
-  assert.deepEqual(ids, ["today", "upcoming", "later", "custom_col", DONE_COLUMN_ID]);
+  assert.deepEqual(ids, ["upcoming", "custom_col", "today", "later", DONE_COLUMN_ID]);
   const today = settings.data.boardColumns.find((c) => c.id === "today");
-  assert.equal(today.title, "TODO");
+  const upcoming = settings.data.boardColumns.find((c) => c.id === "upcoming");
+  const done = settings.data.boardColumns.find((c) => c.id === DONE_COLUMN_ID);
+  assert.equal(today.title, "My Todo");
+  assert.equal(upcoming.title, "My Upcoming");
+  assert.equal(done.title, "My Done");
 });
 
 test("normalizeBoardColumnOrders keeps done column at the end", () => {
