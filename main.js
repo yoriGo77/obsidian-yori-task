@@ -598,6 +598,112 @@ const YORI_EMBEDDED_SVG = `<svg width="337" height="275" viewBox="0 0 337 275" f
 <path d="M84.8422 114.781C50.2368 156.698 55.4061 180.849 55.3422 184.281C55.2782 187.713 59.7329 209.59 65.8593 218.781M248.842 114.781C270.596 133.738 285.406 171.349 283.842 188.781C282.278 206.213 277.779 211.036 274.071 218.781M65.8593 218.781C72.001 227.996 75.4062 233.349 84.8422 240.781C94.2782 248.213 120.842 268.808 173.842 268.781C214.75 268.761 246.278 247.713 254.842 240.781C263.406 233.849 270.164 226.941 274.071 218.781M65.8593 218.781C55.8509 232.761 51.2782 240.781 33.8422 240.781C16.4062 240.781 10.2782 229.213 6.84221 211.781C3.40619 194.349 10.827 171.016 22.8422 145.781C35.9948 118.618 45.9002 103.561 73.8422 76.7813C93.7339 57.6275 131.151 42.6412 137.342 43.2812C137.342 43.2812 142.023 35.2133 134.278 26.2133C126.534 17.2133 118.888 19.1666 110.342 18.7812C124.516 11.4083 131.635 9.30343 142.023 11.2076C151.063 13.8283 158.767 20.202 162.023 24.2077C165.278 28.2133 166.842 33.7813 166.842 33.7813C169.947 22.5146 169.778 24.2077 173.842 18.7812C177.906 13.3547 189.278 8.21331 198.842 6.78121C208.406 5.34911 214.278 6.21332 220.842 6.7812C227.406 7.34907 239.778 11.2076 239.778 11.2076C222.344 15.0419 213.342 16.2812 204.278 20.7133C195.214 25.1454 193.778 26.2133 188.842 31.7812C183.906 37.3491 191.406 44.8493 197.842 46.7813C204.278 48.7133 238.087 54.7548 266.842 76.7813C295.281 102.997 302.115 117.087 314.842 145.781C323.592 171.926 332.212 188.016 329.842 211.781C327.472 235.546 317.483 239.765 299.842 240.781C290.102 239.558 284.534 236.428 274.071 218.781M128.689 199.999C129.958 206.015 132.5 208.999 136.072 211.192C139.644 213.385 144.554 214.72 151 213.499C157.576 212.124 160.625 207.986 163.588 202.653C166.551 197.32 166.598 193.799 166.598 193.799C166.598 193.799 167.204 203.223 169 205.999C170.796 208.775 171.5 210.499 177.5 213.499C183.5 216.499 192.778 214.088 196.778 211.781C200.778 209.474 202.597 207.53 204.689 199.999M126.896 132.096C122.775 132.196 118.991 138.176 118.985 146.288C118.978 153.985 123.69 156.783 126.896 156.932C131.055 156.868 134.385 153.028 134.278 145.781C134.162 137.842 131.332 131.986 126.896 132.096ZM202.896 132.096C198.775 132.196 194.991 138.176 194.985 146.288C194.978 153.985 199.69 156.783 202.896 156.932C207.055 156.868 210.385 153.028 210.278 145.781C210.162 137.842 207.332 131.986 202.896 132.096Z" fill="none" stroke="black" stroke-width="12"/>
 </svg>`;
 
+/**
+ * 深色 / 浅色主题下的默认色映射。用户在设置里选择的非默认值不会被改写，
+ * 仅当当前值与"另一主题的默认值"完全一致时，自动切换到当前主题对应默认值。
+ */
+const LIGHT_DEFAULT_COLORS = {
+  accentColor: "#998052",
+  cardBgColor: "#f6f1eb",
+  panelBgColor: "#f8f7f6",
+  taskTextColor: "#806531",
+  addHintColor: "#cbc0af"
+};
+
+const DARK_DEFAULT_COLORS = {
+  accentColor: "#c2a888",
+  cardBgColor: "#2e2a23",
+  panelBgColor: "#1c1b19",
+  taskTextColor: "#cdb88a",
+  addHintColor: "#6f6859"
+};
+
+const DONE_CARD_BG_DARK = "#252423";
+
+/**
+ * 深色模式下使用更鲜亮的色板（按 name 与 PALETTE 一一对应）。
+ * 在浅色模式下选过的色保存到数据后，深色模式渲染时按 name 映射到对应的鲜亮色。
+ */
+const PALETTE_DARK = [
+  { name: "yellow", color: "#ffe28b" },
+  { name: "green", color: "#8edf91" },
+  { name: "blue", color: "#82d0f6" },
+  { name: "red", color: "#f49a82" },
+  { name: "purple", color: "#d6b2ed" },
+  { name: "gray", color: "#f7f5f1" }
+];
+
+/** 高亮卡片在深色模式下的背景透明度（边框使用色板原色，背景叠半透明） */
+const DARK_HIGHLIGHT_ALPHA = 0.18;
+
+function findPaletteIndexByColor(color) {
+  const c = (color || "").trim().toLowerCase();
+  if (!c) return -1;
+  for (let i = 0; i < PALETTE.length; i += 1) {
+    const lightHex = (PALETTE[i].color || "").toLowerCase();
+    const darkHex = (PALETTE_DARK[i] && PALETTE_DARK[i].color || "").toLowerCase();
+    if (c === lightHex || c === darkHex) return i;
+  }
+  return -1;
+}
+
+function paletteColorForTheme(color, isDark) {
+  const idx = findPaletteIndexByColor(color);
+  if (idx < 0) return color;
+  return isDark ? PALETTE_DARK[idx].color : PALETTE[idx].color;
+}
+
+function hexToRgbTuple(hex) {
+  if (!hex || typeof hex !== "string") return null;
+  let s = hex.trim().toLowerCase();
+  if (!s.startsWith("#")) return null;
+  if (s.length === 4) s = `#${s[1]}${s[1]}${s[2]}${s[2]}${s[3]}${s[3]}`;
+  if (s.length !== 7) return null;
+  const r = parseInt(s.slice(1, 3), 16);
+  const g = parseInt(s.slice(3, 5), 16);
+  const b = parseInt(s.slice(5, 7), 16);
+  if ([r, g, b].some((n) => Number.isNaN(n))) return null;
+  return { r, g, b };
+}
+
+function applyAlphaToColor(color, alpha) {
+  const rgb = hexToRgbTuple(color);
+  const a = Math.max(0, Math.min(1, Number.isFinite(alpha) ? alpha : 1));
+  if (!rgb) return color;
+  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${a})`;
+}
+
+function isDocumentDarkTheme() {
+  if (typeof document === "undefined") return false;
+  const body = document.body;
+  if (!body || !body.classList) return false;
+  return body.classList.contains("theme-dark");
+}
+
+function pickThemeColor(userValue, key, isDark) {
+  const lightDefault = (LIGHT_DEFAULT_COLORS[key] || "").toLowerCase();
+  const darkDefault = (DARK_DEFAULT_COLORS[key] || "").toLowerCase();
+  const cur = (userValue || "").trim().toLowerCase();
+  if (!cur) return isDark ? DARK_DEFAULT_COLORS[key] : LIGHT_DEFAULT_COLORS[key];
+  if (cur === lightDefault || cur === darkDefault) {
+    return isDark ? DARK_DEFAULT_COLORS[key] : LIGHT_DEFAULT_COLORS[key];
+  }
+  return userValue;
+}
+
+function getEffectiveAppearance(settings) {
+  const isDark = isDocumentDarkTheme();
+  return {
+    isDark,
+    accent: pickThemeColor(settings?.accentColor, "accentColor", isDark),
+    cardBg: pickThemeColor(settings?.cardBgColor, "cardBgColor", isDark),
+    panelBg: pickThemeColor(settings?.panelBgColor, "panelBgColor", isDark),
+    taskText: pickThemeColor(settings?.taskTextColor, "taskTextColor", isDark),
+    addHint: pickThemeColor(settings?.addHintColor, "addHintColor", isDark),
+    doneCardBg: isDark ? DONE_CARD_BG_DARK : DONE_CARD_BG
+  };
+}
+
 function normalizeRibbonSvgColors(s) {
   return s.replace(/fill="black"/gi, 'fill="currentColor"').replace(/stroke="black"/gi, 'stroke="currentColor"');
 }
@@ -742,6 +848,9 @@ class YoriTaskPlugin extends Plugin {
     this.register(() => {
       document.removeEventListener("click", handleArchiveLink, true);
     });
+
+    /* 主题切换（深色 / 浅色）时刷新已打开的视图，让插件内默认配色同步切换 */
+    this.registerEvent(this.app.workspace.on("css-change", () => this.refreshOpenView()));
   }
 
   onunload() {
@@ -805,7 +914,11 @@ class YoriTaskPlugin extends Plugin {
   async activateView() {
     let leaf = this.app.workspace.getLeavesOfType(VIEW_TYPE)[0];
     if (!leaf) {
-      leaf = this.app.workspace.getRightLeaf(false);
+      leaf =
+        this.app.workspace.getRightLeaf(false) ||
+        this.app.workspace.getLeftLeaf(false) ||
+        this.app.workspace.getLeaf(true);
+      if (!leaf) return;
       await leaf.setViewState({ type: VIEW_TYPE, active: true });
     }
     this.app.workspace.revealLeaf(leaf);
@@ -1141,6 +1254,8 @@ class YoriTaskView extends ItemView {
     if (this._cardDrag) {
       document.removeEventListener("mousemove", this._cardDrag.moveHandler, true);
       document.removeEventListener("mouseup", this._cardDrag.upHandler, true);
+      const ghost = this._cardDrag.ghostEl;
+      if (ghost && ghost.parentElement) ghost.parentElement.removeChild(ghost);
       this._cardDrag = null;
     }
     if (this._columnDrag) {
@@ -1187,11 +1302,13 @@ class YoriTaskView extends ItemView {
     const container = this.containerEl.children[1];
     container.empty();
     container.addClass("lp-root");
-    container.style.setProperty("--lp-accent", this.plugin.settings.accentColor);
-    container.style.setProperty("--lp-card-bg", this.plugin.settings.cardBgColor);
-    container.style.setProperty("--lp-add-hint", this.plugin.settings.addHintColor);
-    container.style.setProperty("--lp-panel-bg", this.plugin.settings.panelBgColor || DEFAULT_SETTINGS.panelBgColor);
-    container.style.setProperty("--lp-task-text", this.plugin.settings.taskTextColor || DEFAULT_SETTINGS.taskTextColor);
+    const appearance = getEffectiveAppearance(this.plugin.settings);
+    this._currentAppearance = appearance;
+    container.style.setProperty("--lp-accent", appearance.accent);
+    container.style.setProperty("--lp-card-bg", appearance.cardBg);
+    container.style.setProperty("--lp-add-hint", appearance.addHint);
+    container.style.setProperty("--lp-panel-bg", appearance.panelBg);
+    container.style.setProperty("--lp-task-text", appearance.taskText);
 
     const tabs = container.createDiv({ cls: "lp-tabs" });
     this.createTab(tabs, "task", t("view.tabTask"));
@@ -2184,7 +2301,16 @@ class YoriTaskView extends ItemView {
     const isDoneColumn = sc === SCOPE_BOARD && currentColumnId === DONE_COLUMN_ID;
     const card = parent.createDiv({ cls: "lp-card" });
     card.dataset.eventId = event.id;
-    card.style.backgroundColor = isDoneColumn ? DONE_CARD_BG : event.style?.bgColor || this.plugin.settings.cardBgColor;
+    const appearance = this._currentAppearance || getEffectiveAppearance(this.plugin.settings);
+    const cardStyle = this.resolveCardStyleForRender(event, isDoneColumn, appearance);
+    card.style.backgroundColor = cardStyle.bg;
+    if (cardStyle.outline) {
+      card.style.outline = cardStyle.outline;
+      card.style.outlineOffset = "-1px";
+    } else {
+      card.style.outline = "";
+      card.style.outlineOffset = "";
+    }
     card.onmousedown = (evt) => {
       this.startCardDrag(evt, card, event.id, sc, currentColumnId);
     };
@@ -2274,6 +2400,35 @@ class YoriTaskView extends ItemView {
     };
   }
 
+  /**
+   * 数据里保存的卡片色多为浅色（默认 cardBgColor 或 DONE_CARD_BG）。
+   * - 默认色：深色模式下替换为深色背景版本，无边框
+   * - PALETTE 高亮色：浅色模式照旧；深色模式改为「实色边框 + 半透明同色背景」，
+   *   类似 dashboard 快捷入口的视觉，避免浅色块直接铺到深色面板上对比刺眼
+   */
+  resolveCardStyleForRender(event, isDoneColumn, appearance) {
+    const ap = appearance || this._currentAppearance || getEffectiveAppearance(this.plugin.settings);
+    if (isDoneColumn) return { bg: ap.doneCardBg, outline: "" };
+    const userBg = event?.style?.bgColor;
+    const cur = (userBg || "").trim().toLowerCase();
+    if (!cur) return { bg: ap.cardBg, outline: "" };
+    const lightCard = (LIGHT_DEFAULT_COLORS.cardBgColor || "").toLowerCase();
+    const darkCard = (DARK_DEFAULT_COLORS.cardBgColor || "").toLowerCase();
+    const lightDone = (DONE_CARD_BG || "").toLowerCase();
+    const darkDone = (DONE_CARD_BG_DARK || "").toLowerCase();
+    if (cur === lightCard || cur === darkCard) return { bg: ap.cardBg, outline: "" };
+    if (cur === lightDone || cur === darkDone) return { bg: ap.doneCardBg, outline: "" };
+    /* PALETTE 高亮：按主题映射，深色用鲜亮色板 */
+    const themedColor = paletteColorForTheme(userBg, ap.isDark);
+    if (ap.isDark) {
+      return {
+        bg: applyAlphaToColor(themedColor, DARK_HIGHLIGHT_ALPHA),
+        outline: `1px solid ${themedColor}`
+      };
+    }
+    return { bg: themedColor, outline: "" };
+  }
+
   getDropIndex(list, cursorY) {
     const cards = Array.from(list.querySelectorAll(".lp-card:not(.is-dragging)"));
     for (let i = 0; i < cards.length; i += 1) {
@@ -2346,16 +2501,21 @@ class YoriTaskView extends ItemView {
     if (!(sc === SCOPE_BOARD && currentColumnId === DONE_COLUMN_ID)) {
       const swatchWrap = document.createElement("div");
       swatchWrap.className = "lp-context-swatches";
+      const isDark = isDocumentDarkTheme();
+      const visiblePalette = isDark ? PALETTE_DARK : PALETTE;
       const currentHex = normalizeHex(event.style?.bgColor);
-      PALETTE.forEach((entry) => {
+      visiblePalette.forEach((entry, idx) => {
         const swatch = document.createElement("button");
         swatch.type = "button";
         swatch.className = "lp-swatch";
         swatch.style.backgroundColor = entry.color;
         swatch.title = entry.name;
-        if (currentHex === normalizeHex(entry.color)) swatch.classList.add("is-selected");
+        const lightHex = normalizeHex(PALETTE[idx]?.color);
+        const darkHex = normalizeHex(PALETTE_DARK[idx]?.color);
+        const isSamePosition = !!currentHex && (currentHex === lightHex || currentHex === darkHex);
+        if (isSamePosition) swatch.classList.add("is-selected");
         swatch.onclick = async () => {
-          if (normalizeHex(event.style?.bgColor) === normalizeHex(entry.color)) {
+          if (isSamePosition) {
             this.plugin.clearEventHighlight(event.id);
           } else {
             this.plugin.setEventColor(event.id, entry.color);

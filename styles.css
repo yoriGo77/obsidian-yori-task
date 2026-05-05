@@ -910,3 +910,201 @@
 .lp-swatch.is-selected {
   box-shadow: 0 0 0 2px #998052;
 }
+
+/* ============================================================
+   Dark mode overrides — Obsidian 在深色模式下给 body 加 .theme-dark
+   ============================================================ */
+
+/* 周/年顶栏箭头与文字 */
+.theme-dark .lp-week-arrow {
+  color: #c2a888;
+}
+
+.theme-dark .lp-week-chip {
+  background: #2a2722;
+  border-color: #3d362d;
+  color: #b6a98f;
+}
+
+.theme-dark .lp-week-chip.is-active {
+  background: #3a342a;
+  border-color: #c2a888;
+  color: #d4c4a4;
+}
+
+.theme-dark .lp-archive-btn {
+  background: #2a2722;
+  border-color: #3d362d;
+  color: #c2a888;
+}
+
+.theme-dark .lp-archive-btn:hover {
+  background: #322d26;
+}
+
+/* 标签页未激活态 + 激活下划线 */
+.theme-dark .lp-tab {
+  color: #8a7e6a;
+}
+
+.theme-dark .lp-tab.is-active::after {
+  background: #c2a888;
+}
+
+/* 占位提示 */
+.theme-dark .lp-placeholder {
+  color: #7a7160;
+}
+
+/* 列容器 */
+.theme-dark .lp-column {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: #232220;
+}
+
+.theme-dark .lp-column-title--done {
+  color: #7a7160;
+}
+
+/* 列内拖拽时的高亮 */
+.theme-dark .lp-list.drag-over {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.theme-dark .lp-drag-insert-indicator {
+  background: #8a7757;
+}
+
+.theme-dark .lp-column.lp-column-drag-over-before::after,
+.theme-dark .lp-column.lp-column-drag-over-after::after {
+  background: #8a7757;
+}
+
+/* DONE 列卡片悬停链接色 */
+.theme-dark .lp-event-link:hover {
+  color: #d4c4a4;
+}
+
+/* + Add 触发器与展开输入框 */
+.theme-dark .lp-add-trigger {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #6f6859;
+}
+
+.theme-dark .lp-add-input.lp-add-input--expand {
+  background: #2a2722;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #d4c4a4;
+  caret-color: #c2a888;
+}
+
+.theme-dark .lp-add-input.lp-add-input--expand:focus {
+  border-color: #8a7757;
+}
+
+.theme-dark .lp-event-text:focus {
+  border-color: #8a7757;
+}
+
+/* 重命名 / 文本输入 modal */
+.theme-dark .yori-text-input {
+  background: #1f1e1d;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #d4c4a4;
+}
+
+.theme-dark .yori-text-input:focus {
+  border-color: #c2a888;
+}
+
+/* 锁定列按钮 active 态 */
+.theme-dark .lp-lock-column-btn {
+  color: #5a5345;
+}
+
+.theme-dark .lp-lock-column-btn svg {
+  stroke: #5a5345;
+}
+
+.theme-dark .lp-lock-column-btn.is-active {
+  color: #c2a888;
+  border-color: #4a423a;
+  background: #2a2722;
+}
+
+.theme-dark .lp-lock-column-btn.is-active svg {
+  stroke: #c2a888;
+}
+
+.theme-dark .lp-clear-column-btn,
+.theme-dark .lp-clear-column-btn svg {
+  color: #5a5345;
+  stroke: #5a5345;
+}
+
+/* 拖拽 ghost */
+.theme-dark .lp-drag-ghost {
+  background: #2a2722;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #d4c4a4;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* 自定义上下文菜单 */
+.theme-dark .lp-context-menu {
+  background: #2a2722;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+.theme-dark .lp-context-action {
+  color: #d4c4a4;
+}
+
+.theme-dark .lp-context-action:hover {
+  background: #3a342a;
+}
+
+.theme-dark .lp-swatch.is-selected {
+  box-shadow: 0 0 0 2px #c2a888;
+}
+
+/* 复选框：对勾使用浅色 stroke 在深色卡片上更清晰 */
+.theme-dark .lp-check {
+  background: #1f1e1d;
+}
+
+.theme-dark .lp-check:checked {
+  background-color: #1f1e1d;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23c2a888' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' d='M2.5 6l2.5 3 5-6.5'/%3E%3C/svg%3E");
+}
+
+/* 归档笔记内的链接：浅色棕在深色背景太深，整体提亮 */
+.theme-dark .yori-archive-note {
+  --link-color: #c2a888 !important;
+  --link-color-hover: #e0cfa9 !important;
+  --link-unresolved-color: #c2a888 !important;
+}
+
+.theme-dark .yori-archive-note li {
+  color: #c2a888;
+}
+
+.theme-dark .yori-archive-note a.internal-link,
+.theme-dark .yori-archive-note a.internal-link.is-unresolved,
+.theme-dark .markdown-preview-view.yori-archive-note a.internal-link,
+.theme-dark .markdown-preview-view.yori-archive-note a.internal-link.is-unresolved,
+.theme-dark .markdown-source-view.yori-archive-note .cm-hmd-internal-link,
+.theme-dark .markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link {
+  color: #c2a888 !important;
+}
+
+.theme-dark .yori-archive-note a.internal-link:hover,
+.theme-dark .yori-archive-note a.internal-link.is-unresolved:hover,
+.theme-dark .markdown-preview-view.yori-archive-note a.internal-link:hover,
+.theme-dark .markdown-preview-view.yori-archive-note a.internal-link.is-unresolved:hover,
+.theme-dark .markdown-source-view.yori-archive-note .cm-hmd-internal-link:hover,
+.theme-dark .markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link:hover {
+  color: #e0cfa9 !important;
+}
