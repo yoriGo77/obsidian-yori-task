@@ -58,7 +58,40 @@
 
 - 检查 `manifest.json` 与 `versions.json` 是否同时更新。
 
-## 5. 推荐发版备注模板
+## 5. GitHub：**完整 Release**（含上传三文件）
+
+仅 `git tag` **不会**在 GitHub 上出现可下载的安装包；需在仓库 **Releases** 里创建 Release 并挂载 `main.js`、`manifest.json`、`styles.css`。
+
+### 方式 A：网页操作（最常用）
+
+与上文「不推荐只打 tag」对应：务必在 **Draft a new release** 里选对 tag、`Publish release`，并在 **Assets** 中上传上述三个文件。
+
+### 方式 B：命令行脚本（本项目）
+
+前置条件：**远端已有与 `manifest.json` 版本一致的 tag**（例如版本 `1.1.1` 则已有 `git push origin 1.1.1`）。
+
+1. 创建 **GitHub PAT**：
+   - **Classic**：勾选 `repo`；
+   - **Fine-grained**：对该仓库勾选可发布 Release / 读写仓库内容所需权限（以 GitHub 权限说明为准）。
+2. 在本机仓库根目录执行（勿把令牌提交或贴到公开处）：
+
+```powershell
+cd <本仓库根目录>
+$env:GITHUB_TOKEN = "<你的令牌>"
+npm run release:github
+```
+
+或：
+
+```powershell
+.\scripts\publish-github-release.ps1
+```
+
+可选：`.\scripts\publish-github-release.ps1 -ReleaseNotes "## 变更`n- …"`  
+
+成功后会打印 Release 网页链接。若报错「该 tag 上已有 Release」，请先在 GitHub 删除同名 Release，或改用新版本再打 tag。
+
+## 6. 推荐发版备注模板
 
 可在 release 说明中使用：
 
@@ -67,7 +100,7 @@
 - 修复问题：`...`
 - 兼容性说明：桌面端 Obsidian（`minAppVersion` 见 `manifest.json`）
 
-## 6. 发布前验收清单（可勾选）
+## 7. 发布前验收清单（可勾选）
 
 > 建议发版前按此清单逐项勾选，避免遗漏。
 

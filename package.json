@@ -4,6 +4,7 @@
   "private": true,
   "description": "Development tooling for Yori Task plugin",
   "scripts": {
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests/*.test.js",
+    "release:github": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-github-release.ps1"
   }
 }
