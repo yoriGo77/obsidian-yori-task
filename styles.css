@@ -12,6 +12,8 @@
   --lp-add-hint: #cbc0af;
   --lp-panel-bg: #f8f7f6;
   --lp-task-text: #806531;
+  --lp-column-bg: #ffffff;
+  --lp-column-border: #e4dbce;
   /* 添加框最大高度：限制在列内标题下方区域，超出在框内滚动 */
   --lp-add-input-max-h: min(220px, 32vh);
   background-color: var(--lp-panel-bg);
@@ -258,9 +260,9 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1px solid #e4dbce;
+  border: 1px solid var(--lp-column-border);
   border-radius: 4px;
-  background: #ffffff;
+  background: var(--lp-column-bg);
   padding: 12px;
   min-height: 0;
   max-height: 100%;
@@ -303,7 +305,7 @@
 }
 
 .lp-column.lp-column-drag-over {
-  border-color: #e4dbce;
+  border-color: var(--lp-column-border);
   box-shadow: none;
 }
 
@@ -954,12 +956,6 @@
 /* 占位提示 */
 .theme-dark .lp-placeholder {
   color: #7a7160;
-}
-
-/* 列容器 */
-.theme-dark .lp-column {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: #232220;
 }
 
 .theme-dark .lp-column-title--done {

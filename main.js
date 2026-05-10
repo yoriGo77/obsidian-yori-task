@@ -675,9 +675,10 @@ function applyAlphaToColor(color, alpha) {
 
 function isDocumentDarkTheme() {
   if (typeof document === "undefined") return false;
+  const root = document.documentElement;
   const body = document.body;
-  if (!body || !body.classList) return false;
-  return body.classList.contains("theme-dark");
+  const has = (el) => el && el.classList && el.classList.contains("theme-dark");
+  return has(root) || has(body);
 }
 
 function pickThemeColor(userValue, key, isDark) {
@@ -1309,6 +1310,14 @@ class YoriTaskView extends ItemView {
     container.style.setProperty("--lp-add-hint", appearance.addHint);
     container.style.setProperty("--lp-panel-bg", appearance.panelBg);
     container.style.setProperty("--lp-task-text", appearance.taskText);
+    container.style.setProperty(
+      "--lp-column-bg",
+      appearance.isDark ? "var(--background-secondary, #252320)" : "#ffffff"
+    );
+    container.style.setProperty(
+      "--lp-column-border",
+      appearance.isDark ? "var(--background-modifier-border, rgba(255, 255, 255, 0.12))" : "#e4dbce"
+    );
 
     const tabs = container.createDiv({ cls: "lp-tabs" });
     this.createTab(tabs, "task", t("view.tabTask"));
