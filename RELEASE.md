@@ -89,6 +89,8 @@ npm run release:github
 
 可选：`.\scripts\publish-github-release.ps1 -ReleaseNotes "## 变更`n- …"`  
 
+**Artifact attestation（新审核建议）**：推送 **任意 tag** 后会运行 [`.github/workflows/attest-release-assets.yml`](.github/workflows/attest-release-assets.yml)，对工作区中的 `main.js`、`styles.css` 生成 GitHub **build provenance attestations**（与发布用的三文件一致时请确保 **tag 指向的提交** 与 **Release 附件** 同源）。该工作流内会执行 `npm ci` 以满足 lockfile 校验。
+
 成功后会打印 Release 网页链接。若报错「该 tag 上已有 Release」，请先在 GitHub 删除同名 Release，或改用新版本再打 tag。
 
 ## 6. 推荐发版备注模板

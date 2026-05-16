@@ -1,0 +1,29 @@
+name: Attest plugin release artifacts
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+permissions:
+  id-token: write
+  attestations: write
+  contents: read
+
+jobs:
+  attest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 满足社区审核「可复制依赖解析」：lockfile + 与工作流一致的安装结果
+      - name: npm ci (integrity check)
+        run: npm ci --ignore-scripts
+
+      - name: Generate build provenance attestation for release files
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            ${{ github.workspace }}/main.js
+            ${{ github.workspace }}/styles.css

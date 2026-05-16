@@ -63,12 +63,8 @@
 .lp-week-arrow {
   width: 24px;
   height: 24px;
-  border: none !important;
   border-radius: 4px;
   color: #8f7a52;
-  background: transparent !important;
-  box-shadow: none !important;
-  outline: none !important;
   appearance: none;
   -webkit-appearance: none;
   line-height: 1;
@@ -77,14 +73,17 @@
   padding: 0;
 }
 
-.lp-week-arrow:hover,
-.lp-week-arrow:focus,
-.lp-week-arrow:focus-visible,
-.lp-week-arrow:active {
-  border: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  outline: none !important;
+/* Pane scope: overrides Obsidian native button/chrome without !important */
+.workspace-leaf-content[data-type="yori-task-view"] .lp-root .lp-week-arrow,
+.workspace-leaf-content[data-type="yori-task-view"] .lp-root .lp-week-arrow:hover,
+.workspace-leaf-content[data-type="yori-task-view"] .lp-root .lp-week-arrow:focus,
+.workspace-leaf-content[data-type="yori-task-view"] .lp-root .lp-week-arrow:focus-visible,
+.workspace-leaf-content[data-type="yori-task-view"] .lp-root .lp-week-arrow:active {
+  border: none;
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+  outline: none;
 }
 
 .lp-week-controls {
@@ -101,7 +100,7 @@
   font-size: 12px;
   cursor: pointer;
   user-select: none;
-  background: #fff;
+  background: #ffffff;
 }
 
 .lp-week-chip.is-active {
@@ -118,7 +117,7 @@
   color: #8f7a52;
   font-size: 12px;
   cursor: pointer;
-  background: #fff;
+  background: #ffffff;
   user-select: none;
 }
 
@@ -236,13 +235,6 @@
   margin-top: 10px;
 }
 
-/* TASK 视图事件文字颜色 */
-.lp-board-grid--task .lp-event-display,
-.lp-board-grid--task .lp-event-text {
-  color: var(--lp-task-text);
-}
-
-/* TASK 视图：勾选框与任务文字更紧凑 */
 .lp-board-grid--task .lp-card-row {
   gap: 0;
 }
@@ -251,8 +243,10 @@
   margin-left: 2px;
 }
 
+/* TASK 视图：任务文字颜色 + 左边距对齐（合并单一选择器，避免重复声明） */
 .lp-board-grid--task .lp-event-display,
 .lp-board-grid--task .lp-event-text {
+  color: var(--lp-task-text);
   padding-left: 2px;
 }
 
@@ -299,9 +293,9 @@
   cursor: grabbing;
 }
 
-.lp-root.is-any-dragging,
-.lp-root.is-any-dragging * {
-  cursor: grabbing !important;
+.workspace-leaf-content[data-type="yori-task-view"] .lp-root.is-any-dragging,
+.workspace-leaf-content[data-type="yori-task-view"] .lp-root.is-any-dragging * {
+  cursor: grabbing;
 }
 
 .lp-column.lp-column-drag-over {
@@ -387,8 +381,8 @@
   background: transparent;
   appearance: none;
   -webkit-appearance: none;
-  box-shadow: none !important;
-  outline: none !important;
+  box-shadow: none;
+  outline: none;
   opacity: 0;
   pointer-events: none;
   transition: opacity 120ms ease;
@@ -426,16 +420,16 @@
   font-size: 11px;
   line-height: 1;
   color: #d4cbbf;
-  border: none !important;
+  border: none;
   border-radius: 3px;
   padding: 0;
   cursor: pointer;
   user-select: none;
-  background: transparent !important;
+  background: transparent;
   appearance: none;
   -webkit-appearance: none;
-  box-shadow: none !important;
-  outline: none !important;
+  box-shadow: none;
+  outline: none;
   opacity: 0;
   pointer-events: none;
   transition: opacity 120ms ease;
@@ -450,6 +444,19 @@
 .lp-column:hover .lp-clear-column-btn {
   opacity: 1;
   pointer-events: auto;
+}
+
+.workspace-leaf-content[data-type="yori-task-view"] .lp-root .lp-lock-column-btn {
+  box-shadow: none;
+  outline: none;
+}
+
+.workspace-leaf-content[data-type="yori-task-view"] .lp-root .lp-clear-column-btn {
+  border: none;
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+  outline: none;
 }
 
 .lp-list {
@@ -529,7 +536,7 @@
   height: 14px;
   margin: 0;
   flex-shrink: 0;
-  background: #fff;
+  background: #ffffff;
   border: none;
   border-radius: 2px;
   cursor: pointer;
@@ -538,7 +545,7 @@
 }
 
 .lp-check:checked {
-  background-color: #fff;
+  background-color: #ffffff;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23998052' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' d='M2.5 6l2.5 3 5-6.5'/%3E%3C/svg%3E");
   background-size: 11px;
   background-position: center;
@@ -577,8 +584,9 @@
   color: #b2a899;
 }
 
-/* 归档笔记：仅链接悬浮时变色，默认颜色保持主题原值 */
-.yori-archive-note li {
+/* 归档笔记：列表与链接配色（加长选择链，避免依赖 !important） */
+/* 归档笔记：列表条目颜色区分浅/深主题 */
+:root:not(.theme-dark) .yori-archive-note li {
   color: #998052;
 }
 
@@ -589,36 +597,86 @@
   --link-unresolved-opacity: 1;
 }
 
-.theme-light .yori-archive-note,
-.theme-dark .yori-archive-note,
-.markdown-reading-view.yori-archive-note,
-.markdown-preview-view.yori-archive-note,
-.markdown-source-view.yori-archive-note {
-  --link-color: #998052 !important;
-  --link-color-hover: #b2a899 !important;
-  --link-unresolved-color: #998052 !important;
-  --link-unresolved-opacity: 1 !important;
+body.theme-light .markdown-reading-view.markdown-preview-view.yori-archive-note,
+body.theme-light .markdown-preview-view.yori-archive-note,
+body.theme-light .markdown-source-view.yori-archive-note,
+:root:not(.theme-dark) .markdown-reading-view.markdown-preview-view.yori-archive-note,
+:root:not(.theme-dark) .markdown-preview-view.yori-archive-note,
+:root:not(.theme-dark) .markdown-source-view.yori-archive-note {
+  --link-color: #998052;
+  --link-color-hover: #b2a899;
+  --link-unresolved-color: #998052;
+  --link-unresolved-opacity: 1;
 }
 
-.yori-archive-note a.internal-link,
-.yori-archive-note a.internal-link.is-unresolved,
-.markdown-preview-view.yori-archive-note a.internal-link,
-.markdown-preview-view.yori-archive-note a.internal-link.is-unresolved,
-.markdown-source-view.yori-archive-note .cm-hmd-internal-link,
-.markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link {
-  color: #998052 !important;
-  opacity: 1 !important;
+:root:not(.theme-dark) .markdown-preview-view.yori-archive-note a.internal-link,
+:root:not(.theme-dark) .markdown-preview-view.yori-archive-note a.internal-link.is-unresolved,
+:root:not(.theme-dark) .markdown-reading-view.markdown-preview-view.yori-archive-note a.internal-link,
+:root:not(.theme-dark) .markdown-reading-view.markdown-preview-view.yori-archive-note a.internal-link.is-unresolved,
+:root:not(.theme-dark) .markdown-source-view.yori-archive-note .cm-hmd-internal-link,
+:root:not(.theme-dark) .markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link,
+:root:not(.theme-dark) .yori-archive-note a.internal-link,
+:root:not(.theme-dark) .yori-archive-note a.internal-link.is-unresolved {
+  color: #998052;
+  opacity: 1;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-.yori-archive-note a.internal-link:hover,
-.yori-archive-note a.internal-link.is-unresolved:hover,
-.markdown-preview-view.yori-archive-note a.internal-link:hover,
-.markdown-preview-view.yori-archive-note a.internal-link.is-unresolved:hover,
-.markdown-source-view.yori-archive-note .cm-hmd-internal-link:hover,
-.markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link:hover {
-  color: #b2a899 !important;
+:root:not(.theme-dark) .markdown-preview-view.yori-archive-note a.internal-link:hover,
+:root:not(.theme-dark) .markdown-preview-view.yori-archive-note a.internal-link.is-unresolved:hover,
+:root:not(.theme-dark) .markdown-reading-view.markdown-preview-view.yori-archive-note a.internal-link:hover,
+:root:not(.theme-dark) .markdown-reading-view.markdown-preview-view.yori-archive-note a.internal-link.is-unresolved:hover,
+:root:not(.theme-dark) .markdown-source-view.yori-archive-note .cm-hmd-internal-link:hover,
+:root:not(.theme-dark) .markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link:hover,
+:root:not(.theme-dark) .yori-archive-note a.internal-link:hover,
+:root:not(.theme-dark) .yori-archive-note a.internal-link.is-unresolved:hover {
+  color: #b2a899;
+}
+
+:root.theme-dark .yori-archive-note {
+  --link-color: #c2a888;
+  --link-color-hover: #e0cfa9;
+  --link-unresolved-color: #c2a888;
+  --link-unresolved-opacity: 1;
+}
+
+:root.theme-dark .markdown-reading-view.markdown-preview-view.yori-archive-note,
+:root.theme-dark .markdown-preview-view.yori-archive-note,
+:root.theme-dark .markdown-source-view.yori-archive-note {
+  --link-color: #c2a888;
+  --link-color-hover: #e0cfa9;
+  --link-unresolved-color: #c2a888;
+  --link-unresolved-opacity: 1;
+}
+
+:root.theme-dark .markdown-preview-view.yori-archive-note a.internal-link,
+:root.theme-dark .markdown-preview-view.yori-archive-note a.internal-link.is-unresolved,
+:root.theme-dark .markdown-reading-view.markdown-preview-view.yori-archive-note a.internal-link,
+:root.theme-dark .markdown-reading-view.markdown-preview-view.yori-archive-note a.internal-link.is-unresolved,
+:root.theme-dark .markdown-source-view.yori-archive-note .cm-hmd-internal-link,
+:root.theme-dark .markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link,
+:root.theme-dark .yori-archive-note a.internal-link,
+:root.theme-dark .yori-archive-note a.internal-link.is-unresolved {
+  color: #c2a888;
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+:root.theme-dark .markdown-preview-view.yori-archive-note a.internal-link:hover,
+:root.theme-dark .markdown-preview-view.yori-archive-note a.internal-link.is-unresolved:hover,
+:root.theme-dark .markdown-reading-view.markdown-preview-view.yori-archive-note a.internal-link:hover,
+:root.theme-dark .markdown-reading-view.markdown-preview-view.yori-archive-note a.internal-link.is-unresolved:hover,
+:root.theme-dark .markdown-source-view.yori-archive-note .cm-hmd-internal-link:hover,
+:root.theme-dark .markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link:hover,
+:root.theme-dark .yori-archive-note a.internal-link:hover,
+:root.theme-dark .yori-archive-note a.internal-link.is-unresolved:hover {
+  color: #e0cfa9;
+}
+
+:root.theme-dark .yori-archive-note li {
+  color: #c2a888;
 }
 
 .lp-event-edit-wrap {
@@ -676,7 +734,7 @@
   box-sizing: border-box;
   border: 1px dashed #cbc0af;
   border-radius: 4px;
-  background: #fff;
+  background: #ffffff;
   color: var(--lp-add-hint);
   text-align: center;
   padding: 0 12px;
@@ -715,7 +773,7 @@
   padding: 10px 12px;
   border: 1px dashed var(--lp-add-hint);
   border-radius: 4px;
-  background: #fff;
+  background: #ffffff;
   color: #998052;
   resize: none;
   overflow-y: auto;
@@ -754,7 +812,7 @@
   margin-bottom: 10px;
   font-size: 14px;
   color: #5d4f35;
-  background: #fff;
+  background: #ffffff;
 }
 
 .yori-text-input:focus {
@@ -862,10 +920,9 @@
   border-radius: 8px;
 }
 
-.is-hidden {
-  display: none !important;
+.workspace-leaf-content[data-type="yori-task-view"] .lp-root .is-hidden {
+  display: none;
 }
-
 .lp-context-menu {
   position: fixed;
   z-index: 10000;
@@ -1074,33 +1131,4 @@
 .theme-dark .lp-check:checked {
   background-color: #1f1e1d;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23c2a888' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' d='M2.5 6l2.5 3 5-6.5'/%3E%3C/svg%3E");
-}
-
-/* 归档笔记内的链接：浅色棕在深色背景太深，整体提亮 */
-.theme-dark .yori-archive-note {
-  --link-color: #c2a888 !important;
-  --link-color-hover: #e0cfa9 !important;
-  --link-unresolved-color: #c2a888 !important;
-}
-
-.theme-dark .yori-archive-note li {
-  color: #c2a888;
-}
-
-.theme-dark .yori-archive-note a.internal-link,
-.theme-dark .yori-archive-note a.internal-link.is-unresolved,
-.theme-dark .markdown-preview-view.yori-archive-note a.internal-link,
-.theme-dark .markdown-preview-view.yori-archive-note a.internal-link.is-unresolved,
-.theme-dark .markdown-source-view.yori-archive-note .cm-hmd-internal-link,
-.theme-dark .markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link {
-  color: #c2a888 !important;
-}
-
-.theme-dark .yori-archive-note a.internal-link:hover,
-.theme-dark .yori-archive-note a.internal-link.is-unresolved:hover,
-.theme-dark .markdown-preview-view.yori-archive-note a.internal-link:hover,
-.theme-dark .markdown-preview-view.yori-archive-note a.internal-link.is-unresolved:hover,
-.theme-dark .markdown-source-view.yori-archive-note .cm-hmd-internal-link:hover,
-.theme-dark .markdown-source-view.mod-cm6.yori-archive-note .cm-hmd-internal-link:hover {
-  color: #e0cfa9 !important;
 }
